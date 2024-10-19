@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+
 type DeleteAllFiltersProps = {
   handleDeleteAllFilters: () => void;
 };
@@ -6,7 +8,7 @@ type DeleteAllFiltersProps = {
 const DeleteAllFilters = ({ handleDeleteAllFilters }: DeleteAllFiltersProps) => {
 
   return (
-    <button onClick={handleDeleteAllFilters}>Delete All Filters</button>
+    <Button onClick={handleDeleteAllFilters}>Delete All Filters</Button>
   );
 }
 

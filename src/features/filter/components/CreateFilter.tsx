@@ -1,5 +1,6 @@
 import { Dispatch } from "react";
 import { FilterStruct, FilterType } from "../../../types/types";
+import { Button } from "@/components/ui/button";
 
 type CreateFilterProps = {
   filter: FilterStruct;
@@ -36,8 +37,8 @@ const CreateFilter = ({ handleAddFilter, handleClaenInpts, filter, setFilter }: 
         <option value={FilterType.URL}>URL</option>
         <option value={FilterType.TITLE}>Title</option>
       </select>
-      <button onClick={() => handleAddFilter(filter)}>Add Filter</button>
-      <button onClick={handleClaenInpts}>Clear Inputs</button>
+      <Button onClick={() => handleAddFilter(filter)}>Add Filter</Button>
+      <Button onClick={handleClaenInpts}>Clear Inputs</Button>
     </div>
   );
 
