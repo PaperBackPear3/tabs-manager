@@ -1,4 +1,4 @@
-import { AllFilterLocalStorage, filterStruct } from "../types/types";
+import { AllFilterLocalStorage, FilterStruct } from "../types/types";
 import { getLocalStorage, setLocalStorage } from "./localStorageHelper";
 
 export const getFilters = async (): Promise<AllFilterLocalStorage> => {
@@ -9,8 +9,11 @@ export const setFilters = (filters: AllFilterLocalStorage) => {
   return setLocalStorage('filters', filters);
 }
 
-export const addFilter = async (filter: filterStruct) => {
+export const upsertFilter = async (filter: FilterStruct) => {
   const filters = await getFilters();
+  if (!filters) {
+    return setFilters({ [filter.filterName]: filter });
+  }
   filters[filter.filterName] = filter;
   return setFilters(filters);
 }

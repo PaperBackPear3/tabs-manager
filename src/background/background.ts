@@ -1,11 +1,13 @@
 async function addToTabGroup(tabId: number): Promise<void> {
 
-  const tabsUrlCommonNames = [
-    'monday',
-    'jira',
-    'github',
-    'stackoverflow',
-  ];
+  // const tabsUrlCommonNames = [
+  //   'monday',
+  //   'jira',
+  //   'github',
+  //   'stackoverflow',
+  //   'atlassian',
+  //   'bitbucket',
+  // ];
 
   console.log((await chrome.tabs.get(tabId)).title);
   console.log((await chrome.tabs.get(tabId)).url);
@@ -17,13 +19,13 @@ async function addToTabGroup(tabId: number): Promise<void> {
 
   const websiteName = currentUrl.split('/')[2];
   console.log('websiteName', websiteName);
-  const isUrlToGroup = tabsUrlCommonNames.find((name) => currentUrl.includes(name));
+  // const isUrlToGroup = tabsUrlCommonNames.find((name) => currentUrl.includes(name));
 
-  if (isUrlToGroup) {
-    const existingGroupId = (await chrome.tabGroups.query({ title: isUrlToGroup.toUpperCase() })).map(group => group.id)[0];
+  // if (isUrlToGroup) {
+    const existingGroupId = (await chrome.tabGroups.query({ title: websiteName.toUpperCase() })).map(group => group.id)[0];
     const group = await chrome.tabs.group({ groupId: existingGroupId, tabIds: [tabId] });
-    await chrome.tabGroups.update(group, { title: isUrlToGroup.toUpperCase() });
-  }
+    await chrome.tabGroups.update(group, { title: websiteName.toUpperCase() });
+  // }
 }
 
 chrome.tabs.onCreated.addListener(async function callback(tab) {

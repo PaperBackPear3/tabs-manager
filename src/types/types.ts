@@ -1,10 +1,10 @@
 
-export type AllFilterLocalStorage = { [key: string]: filterStruct }
+export type AllFilterLocalStorage = { [key: string]: FilterStruct }
 
-export type filterStruct = {
+export type FilterStruct = {
   filterName: string;
   tabGroupName: string;
-  filterValue: string;
+  filterValues: string[];
   filterType: FilterType;
 }
 
