@@ -28,8 +28,8 @@ const CreateFilter = ({ handleAddFilter, handleClaenInpts, filter, setFilter }: 
     setFilter({ ...filter, filterValues: e.target.value.split(',') });
   };
 
-  const handleFilterTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setFilter({ ...filter, filterType: e.target.value as FilterType });
+  const handleFilterTypeChange = (val: FilterType) => {
+    setFilter({ ...filter, filterType: val });
   };
 
   return (
@@ -38,40 +38,42 @@ const CreateFilter = ({ handleAddFilter, handleClaenInpts, filter, setFilter }: 
         <CardTitle>Create Filter</CardTitle>
       </CardHeader>
       <CardContent>
-        <Label htmlFor="name">Name</Label>
-        <Input
-          id="name"
-          placeholder="Filter name"
-          type="text"
-          value={filter.filterName}
-          onChange={handleFilterNameChange}
-        />
-        <Label htmlFor="tabGroupName">Tab Group</Label>
-        <Input
-          id="tabGroupName"
-          placeholder="Work, Personal, etc."
-          type="text"
-          value={filter.tabGroupName}
-          onChange={handleTabGroupNameChange}
-        />
-        <Label htmlFor="filterValues">Values</Label>
-        <Input id="filterValues"
-          placeholder="values"
-          type="text" value={filter.filterValues.join(',')}
-          onChange={handleFilterValuesChange}
-        />
-
-        <Select onValueChange={() => handleFilterTypeChange}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="filter type" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value={FilterType.URL}>URL</SelectItem>
-            <SelectItem value={FilterType.TITLE}>Title</SelectItem>
-          </SelectContent>
-        </Select>
+        <div className="flex flex-col items-start space-y-1.5">
+          <Label htmlFor="name">Name</Label>
+          <Input
+            id="name"
+            placeholder="Filter name"
+            type="text"
+            value={filter.filterName}
+            onChange={handleFilterNameChange}
+          />
+          <Label htmlFor="tabGroupName">Tab Group Nam</Label>
+          <Input
+            id="tabGroupName"
+            placeholder="Work, Personal, etc."
+            type="text"
+            value={filter.tabGroupName}
+            onChange={handleTabGroupNameChange}
+          />
+          <Label htmlFor="filterValues">Values</Label>
+          <Input id="filterValues"
+            placeholder="values"
+            type="text" value={filter.filterValues.join(',')}
+            onChange={handleFilterValuesChange}
+          />
+          <Label htmlFor="filterType">Filter Type</Label>
+          <Select onValueChange={(val) => handleFilterTypeChange(val as FilterType)}>
+            <SelectTrigger>
+              <SelectValue placeholder="filter type" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value={FilterType.URL}>URL</SelectItem>
+              <SelectItem value={FilterType.TITLE}>Title</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </CardContent>
-      <CardFooter>
+      <CardFooter className="gap-8">
         <Button onClick={() => handleAddFilter(filter)}>Add Filter</Button>
         <Button variant="secondary" onClick={handleClaenInpts}>Clear Inputs</Button>
       </CardFooter>
