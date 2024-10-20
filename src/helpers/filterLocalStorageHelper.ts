@@ -23,6 +23,12 @@ export const clearFilters = () => {
   return setFilters({});
 }
 
+export const deleteFilter = async (filterName: string) => {
+  const filters = await getFilters();
+  delete filters[filterName];
+  return setFilters(filters);
+}
+
 export const getFilterKeys = async () => {
   return await getLocalStorage('filters') ? Object.keys(getLocalStorage('filters')) : [];
 }

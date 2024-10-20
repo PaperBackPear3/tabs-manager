@@ -3,19 +3,20 @@ import CreateFilter from '../features/filter/components/CreateFilter'
 import AvailiableFilters from '../features/filter/components/AvailableFilters'
 import { useCallback, useEffect, useState } from 'react';
 import { AllFilterLocalStorage, FilterStruct, FilterType } from '../types/types';
-import { clearFilters, getFilters, upsertFilter } from '../helpers/filterLocalStorageHelper';
+import { clearFilters, deleteFilter, getFilters, upsertFilter } from '../helpers/filterLocalStorageHelper';
 import DeleteAllFilters from '../features/filter/components/DeleteAllFilters';
 
 function App() {
   const [availableFilters, setAvailableFilters] = useState<AllFilterLocalStorage>({});
-
-
-  const [filter, setFilter] = useState<FilterStruct>({
+  const initialFilter: FilterStruct = {
     filterName: '',
     tabGroupName: '',
     filterValues: [],
     filterType: FilterType.URL,
-  });
+    autoRun: false,
+  };
+
+  const [filter, setFilter] = useState<FilterStruct>(initialFilter);
 
   const getAvailableFilters = useCallback(() => {
     return getFilters();
@@ -38,12 +39,7 @@ function App() {
   }
 
   const handleClaenInpts = () => {
-    setFilter({
-      filterName: '',
-      tabGroupName: '',
-      filterValues: [],
-      filterType: FilterType.URL,
-    });
+    setFilter(initialFilter);
   }
 
   const handleDeleteAllFilters = () => {
@@ -52,16 +48,35 @@ function App() {
     // Clear state
     setAvailableFilters({});
   };
+
+  const handleDeleteFilter = (filterName: string) => {
+    // Delete filter
+    // Delete filter from local storage
+    // Update state
+    deleteFilter(filterName).then(() => {
+      // Update state
+      getAvailableFilters().then((filters) => {
+        setAvailableFilters(filters);
+      });
+    });
+  }
+
   return (
     <>
       <div className="flex flex-row gap-8">
         <div>
           <CreateFilter handleAddFilter={handleAddFilter} handleClaenInpts={handleClaenInpts} filter={filter} setFilter={setFilter} />
         </div>
-        <div>
-          <DeleteAllFilters handleDeleteAllFilters={handleDeleteAllFilters} />
-          <AvailiableFilters availableFilters={availableFilters} />
-        </div>
+        {Object.keys(availableFilters).length > 0 && (
+          <div>
+            <DeleteAllFilters handleDeleteAllFilters={handleDeleteAllFilters} />
+
+            <AvailiableFilters
+              availableFilters={availableFilters}
+              deleteElement={handleDeleteFilter}
+            />
+          </div>
+        )}
       </div>
     </>
   )

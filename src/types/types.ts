@@ -6,6 +6,7 @@ export type FilterStruct = {
   tabGroupName: string;
   filterValues: string[];
   filterType: FilterType;
+  autoRun: boolean;
 }
 
 export enum FilterType {
