@@ -8,7 +8,7 @@ type DeleteAllFiltersProps = {
 const DeleteAllFilters = ({ handleDeleteAllFilters }: DeleteAllFiltersProps) => {
 
   return (
-    <Button onClick={handleDeleteAllFilters}>Delete All Filters</Button>
+    <Button variant="destructive" onClick={handleDeleteAllFilters}>Delete All Filters</Button>
   );
 }
 

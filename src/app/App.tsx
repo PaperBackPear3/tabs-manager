@@ -54,14 +54,15 @@ function App() {
   };
   return (
     <>
-      <CreateFilter
-        handleAddFilter={handleAddFilter}
-        handleClaenInpts={handleClaenInpts}
-        filter={filter}
-        setFilter={setFilter}
-      />
-      <DeleteAllFilters handleDeleteAllFilters={handleDeleteAllFilters} />
-      <AvailiableFilters availableFilters={availableFilters} />
+      <div className="flex flex-row gap-8">
+        <div>
+          <CreateFilter handleAddFilter={handleAddFilter} handleClaenInpts={handleClaenInpts} filter={filter} setFilter={setFilter} />
+        </div>
+        <div>
+          <DeleteAllFilters handleDeleteAllFilters={handleDeleteAllFilters} />
+          <AvailiableFilters availableFilters={availableFilters} />
+        </div>
+      </div>
     </>
   )
 }

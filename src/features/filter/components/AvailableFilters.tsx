@@ -1,4 +1,6 @@
-import { AllFilterLocalStorage } from "../../../types/types";
+import { ColumnDef } from "@tanstack/react-table";
+import { AllFilterLocalStorage, FilterStruct } from "../../../types/types";
+import { DataTable } from "./data-table";
 
 type AvailiableFiltersProps = {
   availableFilters: AllFilterLocalStorage;
@@ -10,20 +12,31 @@ const AvailiableFilters = ({ availableFilters }: AvailiableFiltersProps) => {
     return <div>No filters available</div>;
   }
 
+
+  const columns: ColumnDef<FilterStruct>[] = [
+    {
+      accessorKey: "filterName",
+      header: "filter name",
+    },
+    {
+      accessorKey: "tabGroupName",
+      header: "tab group name",
+    },
+    {
+      accessorKey: "filterValues",
+      header: "vals",
+    },
+    {
+      accessorKey: "filterType",
+      header: "type",
+    },
+  ]
+
+  const data = Object.values(availableFilters);
+
   return (
-    <div>
-      {Object.keys(availableFilters).map((filterName) => {
-        return (
-          <div key={filterName}>
-            <h3>{filterName}</h3>
-            <div>
-              <p>{availableFilters[filterName].tabGroupName}</p>
-              <p>{availableFilters[filterName].filterValues.join(',')}</p>
-              <p>{availableFilters[filterName].filterType}</p>
-            </div>
-          </div>
-        );
-      })}
+    <div className="container mx-auto py-10">
+      <DataTable columns={columns} data={data} />
     </div>
   );
 }

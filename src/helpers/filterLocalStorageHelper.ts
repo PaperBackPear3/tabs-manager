@@ -11,6 +11,7 @@ export const setFilters = (filters: AllFilterLocalStorage) => {
 
 export const upsertFilter = async (filter: FilterStruct) => {
   const filters = await getFilters();
+  console.log('upsertFilter', filters);
   if (!filters) {
     return setFilters({ [filter.filterName]: filter });
   }
