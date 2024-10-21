@@ -7,7 +7,6 @@ import { clearFilters, deleteFilter, getFilters, upsertFilter } from '../helpers
 import DeleteAllFilters from '../features/filter/components/DeleteAllFilters';
 
 function App() {
-  const [availableFilters, setAvailableFilters] = useState<AllFilterLocalStorage>({});
   const initialFilter: FilterStruct = {
     filterName: '',
     tabGroupName: '',
@@ -17,6 +16,7 @@ function App() {
   };
 
   const [filter, setFilter] = useState<FilterStruct>(initialFilter);
+  const [availableFilters, setAvailableFilters] = useState<AllFilterLocalStorage>({});
 
   useEffect(() => {
     getFilters().then((filters) => {
@@ -70,6 +70,7 @@ function App() {
             <AvailiableFilters
               availableFilters={availableFilters}
               deleteElement={handleDeleteFilter}
+              setFilter={setFilter}
             />
           </div>
         )}

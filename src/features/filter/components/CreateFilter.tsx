@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Switch } from "@/components/ui/switch";
 
 type CreateFilterProps = {
   filter: FilterStruct;
@@ -67,13 +68,7 @@ const CreateFilter = ({ handleAddFilter, handleClaenInpts, filter, setFilter }: 
           />
           <div className="flex gap-8">
             <Label htmlFor="autoRun">Auto Run</Label>
-            <input
-              className="h-5 w-5 bg-gray-300 rounded"
-              type="checkbox"
-              id="autoRun"
-              checked={filter.autoRun}
-              onChange={handleAutoRunChange}
-            />
+            <Switch checked={filter.autoRun} onCheckedChange={handleAutoRunChange} />
           </div>
           <Label htmlFor="filterType">Filter Type</Label>
           <Select onValueChange={(val) => handleFilterTypeChange(val as FilterType)}>

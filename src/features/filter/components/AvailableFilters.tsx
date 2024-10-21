@@ -5,35 +5,64 @@ import runFilter from "@/helpers/filtersHelper";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { collapseGroup } from "@/helpers/tabGroupHelper";
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal } from "lucide-react"
+import { CircleEllipsis, MoreHorizontal } from "lucide-react"
+import { Dispatch } from "react";
+import { Switch } from "@/components/ui/switch";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 type AvailiableFiltersProps = {
   availableFilters: AllFilterLocalStorage;
   deleteElement: (filterName: string) => void;
+  setFilter: Dispatch<FilterStruct>;
 };
 
-const AvailiableFilters = ({ availableFilters, deleteElement }: AvailiableFiltersProps) => {
+const AvailiableFilters = ({ availableFilters, deleteElement, setFilter }: AvailiableFiltersProps) => {
 
   const columns: ColumnDef<FilterStruct>[] = [
     {
       accessorKey: "filterName",
-      header: "filter name",
+      header: "Filter name",
     },
     {
       accessorKey: "tabGroupName",
-      header: "tab group name",
+      header: "Group name",
     },
     {
       accessorKey: "filterValues",
-      header: "vals",
-    },
-    {
-      accessorKey: "filterType",
-      header: "type",
+      header: "Values",
+      cell: ({ row }) => {
+        const isDisabled = row.original.filterValues.length === 1 ? true : false;
+        return (
+          <Popover>
+            <PopoverTrigger disabled={isDisabled}>
+              <Button
+                className="flex flex-row gap-2"
+                variant={isDisabled ? "ghost" : "outline"}
+
+              >
+                <span className="text-sm">{row.original.filterValues[0]}</span>
+                {!isDisabled && <CircleEllipsis size={12} />}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent>
+              <ul className="list-disc list-inside">
+                {row.original.filterValues.map((value, index) => {
+                  return (
+                    <li key={index}>{value}</li>
+                  )
+                })}
+              </ul>
+            </PopoverContent>
+          </Popover>
+        )
+      }
     },
     {
       accessorKey: "autoRun",
-      header: "auto run",
+      header: "Auto run",
+      cell: ({ row }) => {
+        return (<Switch checked={row.original.autoRun} disabled={true} />)
+      }
     },
     {
       id: "actions",
@@ -51,22 +80,25 @@ const AvailiableFilters = ({ availableFilters, deleteElement }: AvailiableFilter
               <DropdownMenuContent>
                 <DropdownMenuItem
                   onClick={() => {
+                    runFilter(row.original)
+                  }}
+                  className="text-yellow-600 hover:!text-yellow-600 hover:!bg-yellow-100">
+                  Run now
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => {
+                  collapseGroup(row.original.tabGroupName)
+                }}>Collapse</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => {
+                  setFilter(row.original)
+                }}>Edit</DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
                     deleteElement(row.original.filterName)
                   }}
                   className="text-red-600 hover:!text-red-600 hover:!bg-red-100">
                   Delete
                 </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  onClick={() => {
-                    runFilter(row.original)
-                  }}
-                  className="text-yellow-600 hover:!text-yellow-600 hover:!bg-yellow-100">
-                  Run
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => {
-                  collapseGroup(row.original.tabGroupName)
-                }}>Collapse</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
 
