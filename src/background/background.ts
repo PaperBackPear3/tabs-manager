@@ -1,53 +1,44 @@
-async function addToTabGroup(tabId: number): Promise<void> {
+// import { addToTabsGroup, getTabGroup } from "@/helpers/tabGroupHelper";
 
-  // const tabsUrlCommonNames = [
-  //   'monday',
-  //   'jira',
-  //   'github',
-  //   'stackoverflow',
-  //   'atlassian',
-  //   'bitbucket',
-  // ];
+// async function addToTabGroup(tabId: number): Promise<void> {
 
-  console.log((await chrome.tabs.get(tabId)).title);
-  console.log((await chrome.tabs.get(tabId)).url);
+//   const tab = await chrome.tabs.get(tabId);
+//   if (!tab)
+//     return;
 
-  const tab = await chrome.tabs.get(tabId);
-  if (!tab)
-    return;
+//   if (tab.url === 'chrome://newtab/')
+//     return;
+//   console.log('tab', tab);
+//   if (tab.groupId > -1)
+//     return;
+//   if (!tab.id)
+//     return;
 
-  if (tab.url === 'chrome://newtab/')
-    return;
+//   const currentUrl = tab.url;
+//   if (!currentUrl)
+//     return;
 
-  if (tab.groupId)
-    return;
+//   const websiteName = currentUrl.split('/')[2].split('.')[0];
 
-  const currentUrl = tab.url;
-  if (!currentUrl)
-    return;
+//   const existingGroupId = await getTabGroup(websiteName)
+//   await addToTabsGroup(existingGroupId, tab.id, websiteName.toUpperCase())
+// }
 
-  const websiteName = currentUrl.split('/')[2];
-  console.log('websiteName', websiteName);
-  const existingGroupId = (await chrome.tabGroups.query({ title: websiteName.toUpperCase() })).map(group => group.id)[0];
-  const group = await chrome.tabs.group({ groupId: existingGroupId, tabIds: [tabId] });
-  await chrome.tabGroups.update(group, { title: websiteName.toUpperCase() });
-}
+// chrome.tabs.onCreated.addListener(async function callback(tab) {
+//   await addToTabGroup(tab.id ?? -1).then(() => console.log('onCreated', 'added to group'));
+// })
 
-chrome.tabs.onCreated.addListener(async function callback(tab) {
-  await addToTabGroup(tab.id ?? -1).then(() => console.log('onCreated', 'added to group'));
-})
+// chrome.tabs.onUpdated.addListener(async function callback(tabId, changeInfo) {
+//   if (changeInfo.url) {
+//     await addToTabGroup(tabId).then(() => console.log('onUpdated', 'added to group'));
+//   }
+// });
 
-chrome.tabs.onUpdated.addListener(async function callback(tabId, changeInfo) {
-  if (changeInfo.url) {
-    await addToTabGroup(tabId).then(() => console.log('onUpdated', 'added to group'));
-  }
-});
-
-chrome.tabs.onAttached.addListener(async function callback(tabId) {
-  await addToTabGroup(tabId);
-});
-
-// chrome.tabs.onActivated.addListener(async function callback(tabId, moveInfo) {
+// chrome.tabs.onAttached.addListener(async function callback(tabId) {
 //   await addToTabGroup(tabId);
 // });
+
+// // chrome.tabs.onActivated.addListener(async function callback(tabId, moveInfo) {
+// //   await addToTabGroup(tabId);
+// // });
 

@@ -1,7 +1,7 @@
 import './App.css'
 import CreateFilter from '../features/filter/components/CreateFilter'
 import AvailiableFilters from '../features/filter/components/AvailableFilters'
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AllFilterLocalStorage, FilterStruct, FilterType } from '../types/types';
 import { clearFilters, deleteFilter, getFilters, upsertFilter } from '../helpers/filterLocalStorageHelper';
 import DeleteAllFilters from '../features/filter/components/DeleteAllFilters';
@@ -18,21 +18,17 @@ function App() {
 
   const [filter, setFilter] = useState<FilterStruct>(initialFilter);
 
-  const getAvailableFilters = useCallback(() => {
-    return getFilters();
-  }, []);
-
   useEffect(() => {
-    getAvailableFilters().then((filters) => {
+    getFilters().then((filters) => {
       setAvailableFilters(filters);
     });
-  }, [getAvailableFilters]);
+  }, []);
 
   const handleAddFilter = () => {
     // Add filter to local storage
     upsertFilter(filter).then(() => {
       // Update state
-      getAvailableFilters().then((filters) => {
+      getFilters().then((filters) => {
         setAvailableFilters(filters);
       });
     });
@@ -55,7 +51,7 @@ function App() {
     // Update state
     deleteFilter(filterName).then(() => {
       // Update state
-      getAvailableFilters().then((filters) => {
+      getFilters().then((filters) => {
         setAvailableFilters(filters);
       });
     });

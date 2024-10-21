@@ -1,7 +1,11 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { AllFilterLocalStorage, FilterStruct } from "../../../types/types";
 import { DataTable } from "../../../components/ui/data-table";
+import runFilter from "@/helpers/filtersHelper";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { collapseGroup } from "@/helpers/tabGroupHelper";
 import { Button } from "@/components/ui/button";
+import { MoreHorizontal } from "lucide-react"
 
 type AvailiableFiltersProps = {
   availableFilters: AllFilterLocalStorage;
@@ -32,29 +36,41 @@ const AvailiableFilters = ({ availableFilters, deleteElement }: AvailiableFilter
       header: "auto run",
     },
     {
-      id: "delete",
-      header: "delete",
+      id: "actions",
+      header: "Actions",
       cell: ({ row }) => {
         return (
           <div className="flex flex-col w-full max-w-24 gap-1">
-            <Button
-              className="mr-2 p-2"
-              variant="destructive"
-              onClick={() => {
-                deleteElement(row.original.filterName)
-              }}
-            >
-              Delete
-            </Button>
-            <Button
-              className="mr-2 p-2"
-              variant="default"
-              onClick={() => {
-                console.log(row.original)
-              }}
-            >
-              Run
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                  <span className="sr-only">Open menu</span>
+                  <MoreHorizontal className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem
+                  onClick={() => {
+                    deleteElement(row.original.filterName)
+                  }}
+                  className="text-red-600 hover:!text-red-600 hover:!bg-red-100">
+                  Delete
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={() => {
+                    runFilter(row.original)
+                  }}
+                  className="text-yellow-600 hover:!text-yellow-600 hover:!bg-yellow-100">
+                  Run
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => {
+                  collapseGroup(row.original.tabGroupName)
+                }}>Collapse</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+
           </div>
         );
       },
