@@ -21,5 +21,5 @@ export const doesFilterApplies = (tab: chrome.tabs.Tab, filter: FilterStruct): b
 
   if (filter.filterType === FilterType.TITLE) { tabValue = tab.title; }
 
-  return filter.filterValues.some((value) => tabValue?.includes(value))
+  return filter.filterValues.some((value) => tabValue?.toLowerCase().includes(value.toLowerCase()));
 }
