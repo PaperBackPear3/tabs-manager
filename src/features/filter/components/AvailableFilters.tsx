@@ -20,55 +20,6 @@ const AvailiableFilters = ({ availableFilters, deleteElement, setFilter }: Avail
 
   const columns: ColumnDef<FilterStruct>[] = [
     {
-      id: "actions",
-      header: "Actions",
-      cell: ({ row }) => {
-        return (
-          <div className="flex flex-row w-full max-w-48 gap-1">
-            <Button variant="ghost" onClick={() => {
-              runFilter(row.original)
-            }}
-              className="text-yellow-600 hover:!text-yellow-600 hover:!bg-yellow-100">
-              Run
-            </Button>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="h-8 w-8 p-0">
-                  <span className="sr-only">Open menu</span>
-                  <MoreHorizontal className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuItem
-                  onClick={() => {
-                    runFilter(row.original)
-                  }}
-                  className="text-yellow-600 hover:!text-yellow-600 hover:!bg-yellow-100">
-                  Run now
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => {
-                  collapseGroup(row.original.tabGroupName)
-                }}>Collapse</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => {
-                  setFilter(row.original)
-                }}>Edit</DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => {
-                    deleteElement(row.original.filterName)
-                  }}
-                  className="text-red-600 hover:!text-red-600 hover:!bg-red-100">
-                  Delete
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-
-          </div>
-        );
-      },
-    },
-    {
       accessorKey: "filterName",
       header: "Filter name",
     },
@@ -113,6 +64,55 @@ const AvailiableFilters = ({ availableFilters, deleteElement, setFilter }: Avail
       cell: ({ row }) => {
         return (<Switch checked={row.original.autoRun} disabled={true} />)
       }
+    },
+    {
+      id: "actions",
+      header: "Actions",
+      cell: ({ row }) => {
+        return (
+          <div className="flex flex-row w-full max-w-48 gap-1">
+            <Button variant="ghost" onClick={() => {
+              runFilter(row.original)
+            }}
+              className="text-yellow-600 hover:!text-yellow-600 hover:!bg-yellow-100 p-1">
+              Run
+            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                  <span className="sr-only">Open menu</span>
+                  <MoreHorizontal className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem
+                  onClick={() => {
+                    runFilter(row.original)
+                  }}
+                  className="text-yellow-600 hover:!text-yellow-600 hover:!bg-yellow-100">
+                  Run now
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => {
+                  collapseGroup(row.original.tabGroupName)
+                }}>Collapse</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => {
+                  setFilter(row.original)
+                }}>Edit</DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    deleteElement(row.original.filterName)
+                  }}
+                  className="text-red-600 hover:!text-red-600 hover:!bg-red-100">
+                  Delete
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+
+          </div>
+        );
+      },
     }
   ]
 
