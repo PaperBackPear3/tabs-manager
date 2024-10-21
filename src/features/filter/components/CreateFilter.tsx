@@ -32,6 +32,10 @@ const CreateFilter = ({ handleAddFilter, handleClaenInpts, filter, setFilter }: 
     setFilter({ ...filter, filterType: val });
   };
 
+  const handleAutoRunChange = () => {
+    setFilter({ ...filter, autoRun: !filter.autoRun });
+  }
+
   return (
     <Card>
       <CardHeader>
@@ -61,6 +65,16 @@ const CreateFilter = ({ handleAddFilter, handleClaenInpts, filter, setFilter }: 
             type="text" value={filter.filterValues.join(',')}
             onChange={handleFilterValuesChange}
           />
+          <div className="flex gap-8">
+            <Label htmlFor="autoRun">Auto Run</Label>
+            <input
+              className="h-5 w-5 bg-gray-300 rounded"
+              type="checkbox"
+              id="autoRun"
+              checked={filter.autoRun}
+              onChange={handleAutoRunChange}
+            />
+          </div>
           <Label htmlFor="filterType">Filter Type</Label>
           <Select onValueChange={(val) => handleFilterTypeChange(val as FilterType)}>
             <SelectTrigger>

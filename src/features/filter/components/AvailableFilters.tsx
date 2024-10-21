@@ -28,6 +28,10 @@ const AvailiableFilters = ({ availableFilters, deleteElement }: AvailiableFilter
       header: "type",
     },
     {
+      accessorKey: "autoRun",
+      header: "auto run",
+    },
+    {
       id: "delete",
       header: "delete",
       cell: ({ row }) => {
