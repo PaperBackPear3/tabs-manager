@@ -20,56 +20,17 @@ const AvailiableFilters = ({ availableFilters, deleteElement, setFilter }: Avail
 
   const columns: ColumnDef<FilterStruct>[] = [
     {
-      accessorKey: "filterName",
-      header: "Filter name",
-    },
-    {
-      accessorKey: "tabGroupName",
-      header: "Group name",
-    },
-    {
-      accessorKey: "filterValues",
-      header: "Values",
-      cell: ({ row }) => {
-        const isDisabled = row.original.filterValues.length === 1 ? true : false;
-        return (
-          <Popover>
-            <PopoverTrigger disabled={isDisabled}>
-              <Button
-                className="flex flex-row gap-2"
-                variant={isDisabled ? "ghost" : "outline"}
-
-              >
-                <span className="text-sm">{row.original.filterValues[0]}</span>
-                {!isDisabled && <CircleEllipsis size={12} />}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent>
-              <ul className="list-disc list-inside">
-                {row.original.filterValues.map((value, index) => {
-                  return (
-                    <li key={index}>{value}</li>
-                  )
-                })}
-              </ul>
-            </PopoverContent>
-          </Popover>
-        )
-      }
-    },
-    {
-      accessorKey: "autoRun",
-      header: "Auto run",
-      cell: ({ row }) => {
-        return (<Switch checked={row.original.autoRun} disabled={true} />)
-      }
-    },
-    {
       id: "actions",
       header: "Actions",
       cell: ({ row }) => {
         return (
-          <div className="flex flex-col w-full max-w-24 gap-1">
+          <div className="flex flex-row w-full max-w-48 gap-1">
+            <Button variant="ghost" onClick={() => {
+              runFilter(row.original)
+            }}
+              className="text-yellow-600 hover:!text-yellow-600 hover:!bg-yellow-100">
+              Run
+            </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="h-8 w-8 p-0">
@@ -106,6 +67,52 @@ const AvailiableFilters = ({ availableFilters, deleteElement, setFilter }: Avail
           </div>
         );
       },
+    },
+    {
+      accessorKey: "filterName",
+      header: "Filter name",
+    },
+    {
+      accessorKey: "tabGroupName",
+      header: "Group name",
+    },
+    {
+      accessorKey: "filterValues",
+      header: "Values",
+      cell: ({ row }) => {
+        const isDisabled = row.original.filterValues.length === 1 ? true : false;
+        return (
+          <Popover>
+            <PopoverTrigger disabled={isDisabled}>
+              <Button
+                className="flex flex-row gap-2"
+                variant={isDisabled ? "ghost" : "outline"}
+
+              >
+                <b>{row.original.filterType + ':'}</b> <span className="text-sm">{row.original.filterValues[0]}</span>
+                {!isDisabled && <CircleEllipsis size={12} />}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent>
+              <h2><b>{row.original.filterType}</b>  can contain:</h2>
+              <ul className="list-disc list-inside">
+                {row.original.filterValues.map((value, index) => {
+                  return (
+                    <li key={index}>{value}</li>
+                  )
+                })}
+              </ul>
+            </PopoverContent>
+          </Popover>
+        )
+      }
+    },
+    {
+      accessorKey: "autoRun",
+      header: "Auto run",
+      cell: ({ row }) => {
+        return (<Switch checked={row.original.autoRun} disabled={true} />)
+      }
     }
   ]
 
