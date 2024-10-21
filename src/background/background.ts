@@ -12,20 +12,25 @@ async function addToTabGroup(tabId: number): Promise<void> {
   console.log((await chrome.tabs.get(tabId)).title);
   console.log((await chrome.tabs.get(tabId)).url);
 
+  const tab = await chrome.tabs.get(tabId);
+  if (!tab)
+    return;
 
-  const currentUrl = (await chrome.tabs.get(tabId)).url;
+  if (tab.url === 'chrome://newtab/')
+    return;
+
+  if (tab.groupId)
+    return;
+
+  const currentUrl = tab.url;
   if (!currentUrl)
     return;
 
   const websiteName = currentUrl.split('/')[2];
   console.log('websiteName', websiteName);
-  // const isUrlToGroup = tabsUrlCommonNames.find((name) => currentUrl.includes(name));
-
-  // if (isUrlToGroup) {
-    const existingGroupId = (await chrome.tabGroups.query({ title: websiteName.toUpperCase() })).map(group => group.id)[0];
-    const group = await chrome.tabs.group({ groupId: existingGroupId, tabIds: [tabId] });
-    await chrome.tabGroups.update(group, { title: websiteName.toUpperCase() });
-  // }
+  const existingGroupId = (await chrome.tabGroups.query({ title: websiteName.toUpperCase() })).map(group => group.id)[0];
+  const group = await chrome.tabs.group({ groupId: existingGroupId, tabIds: [tabId] });
+  await chrome.tabGroups.update(group, { title: websiteName.toUpperCase() });
 }
 
 chrome.tabs.onCreated.addListener(async function callback(tab) {
